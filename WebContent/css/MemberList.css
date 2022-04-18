@@ -1,0 +1,198 @@
+@charset "UTF-8";
+
+/* 시멘틱 구조영역 스타일 */
+#wrapping1 {
+	width: auto;
+	height: 1410px;
+	margin: 0 auto;
+	background-image: linear-gradient(to top, #e3eeff 0%, #e3eeff 20%, #f3e7e9 100%);
+}
+
+#wrapping2 {
+	width: 1550px;
+	height: 1410px;
+	margin: 0 auto;
+	background-color: white;
+}
+
+header {
+	position: static;
+	width: 1500px;
+	margin: 0 auto;
+}
+
+nav {
+	position: relative;
+	width: 1500px;
+	z-index: 3;
+	margin: 0 auto;
+}
+
+section {
+	width: 1500px;
+	height: 1050px;
+	padding-top: 20px;
+	margin: 0 auto;
+	z-index: 1;
+	display: block;
+}
+
+#section_left {
+	position: absolute;
+	display: block;
+	width: 300px;
+	height: 1050px;
+	border-right: 1px solid black;
+	box-sizing: border-box;
+	float: left;
+}
+
+/* 왼쪽 네브바 css */
+#left_mainNav{
+	position: relative;
+	background-color: #f3e7e9;
+	display: block;
+	width: 275px;
+	height: 80px;
+	margin-top: 0;
+}
+
+.left_subNav{
+	position: relative;
+	border-bottom: 2.7px solid #cfe2ff;
+	display: block;
+	width: 275px;
+	height: 70px;
+	
+}
+
+.subA:hover{
+	background-color: #e3eeff;
+}
+.subA{
+	text-decoration: none;
+	color: black;
+	font-size: 17px;
+	font-weight: bold;
+	display: block;
+	padding: 25px;
+}
+
+#section_right {
+	position: absolute;
+	display: block;
+	width: 1200px;
+	height: 1050px;
+	margin-left: 300px;
+}
+
+/*----------------------------------------------*/
+/*section-right꾸미기*/
+.table {
+	border-collapse: collapse;
+	border-top: 3px solid #168;
+	margin-left: 40px;
+	margin-top: 30px;
+	position: absolute;
+}
+
+.table th {
+	color: #168;
+	/*background: #f0f6f9;*/
+	background: #dcdcdc;
+	text-align: center;
+}
+
+.table th, .table td {
+	padding: 10px;
+	border: 1px solid #ddd;
+	text-align: center;
+	/* width: 155px;
+	height: 10px; */
+}
+
+.table th:first-child, .table td:first-child {
+	border-left: 0;
+}
+
+.table th:last-child, .table td:last-child {
+	border-right: 0;
+}
+
+.table tr td:first-child {
+	text-align: center;
+}
+
+.table tbody tr:hover {
+	background-color: #eeeeee;
+	color: #168;
+}
+
+.searchBox {
+	float: left;
+	position: absolute;
+	margin-left: 825px;
+	display: block;
+	margin-top: 14px;
+	height: 30px;
+	width: 300px;
+}
+
+.searchBtn {
+	position: absolute;
+	float: left;
+	height: 36px;
+	width: 50px;
+	margin-top: 14px;
+	margin-left: 1140px;
+	font-size: 15px;
+	font-weight: bolder;
+}
+
+.searchTag {
+	position: absolute;
+	float: left;
+	display: block;
+	height: 37px;
+	font-size: 20px;
+	font-weight: bold;
+	margin-left: 640px;
+	margin-top: 17px;
+}
+
+.noTh{
+	width: 5%;
+	height:10px;
+}
+.nameTh{
+	width: 10%;
+	height:10px;
+}
+.idTh{
+	width:10%;
+	height:10px;
+}
+.bdTh{
+	width:10%;
+	height:10px;
+}
+.aboTh{
+	width:7%;
+	height:10px;
+}
+.phoneTh{
+	width:15%;
+	height:10px;
+}
+.emailTh{
+	width:18%;
+	height:10px;
+}
+.addrTh{
+	width:20%;
+	height:10px;
+}
+.delTh{
+	width:5%;
+	height:10px;
+}

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>헌혈의집 찾기</title>
+<link rel="shortcut icon" type="image/x-icon" href="/images/R&B%20CI.png">
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=311ded0f995354355f23560e5c83f893&libraries=services,clusterer,drawing"></script>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<!-- 카카오 우편번호 -->
+<script
+	src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+<script type="text/javascript">
+   $(document).ready(
+         
+      // 시멘틱 구조 불러오기
+      function() {
+
+			// header.html 삽입 script
+			$("#headers").load("/common/htmlTag/header.jsp");
+			
+			// nav.html 삽입 script
+			$("#navs").load("/common/htmlTag/adminNav.jsp");
+
+			// footer.html 삽입 script
+			$("#footers").load("/common/htmlTag/footer.html");
+
+         //sectionleft html삽입
+         $("#section_left").load("/common/htmlTag/sideNav.html");
+      });
+</script>
+
+<style type="text/css">
+
+/* 시멘틱 구조영역 스타일 */
+#wrapping1 {
+	width: auto;
+	height: 1410px;
+	margin: 0 auto;
+	background-image: linear-gradient(to top, #e3eeff 0%, #e3eeff 20%, #f3e7e9 100%);
+}
+
+#wrapping2 {
+	width: 1550px;
+	height: 1410px;
+	margin: 0 auto;
+	background-color: white;
+}
+
+header {
+	position: static;
+	width: 1500px;
+	margin: 0 auto;
+}
+
+nav {
+	position: relative;
+	width: 1500px;
+	z-index: 3;
+	margin: 0 auto;
+}
+
+section {
+	width: 1500px;
+	height: 1050px;
+	padding-top: 20px;
+	margin: 0 auto;
+	z-index: 1;
+	display: block;
+}
+
+#section_left {
+	position: absolute;
+	display: block;
+	width: 300px;
+	height: 1000px;
+	border-right: 1px solid black;
+	box-sizing: border-box;
+	float: left;
+}
+
+/* 왼쪽 네브바 css */
+#left_mainNav {
+	position: relative;
+	background-color: #f3e7e9;
+	display: block;
+	width: 275px;
+	height: 80px;
+	margin-top: 0;
+}
+
+.left_subNav {
+	position: relative;
+	border-bottom: 2.7px solid #cfe2ff;
+	display: block;
+	width: 275px;
+	height: 70px;
+}
+
+.subA:hover {
+	background-color: #e3eeff;
+}
+
+.subA {
+	text-decoration: none;
+	color: black;
+	font-size: 17px;
+	font-weight: bold;
+	display: block;
+	padding: 25px;
+}
+
+#section_right {
+	position: absolute;
+	display: block;
+	width: 1200px;
+	height: 1000px;
+	margin-left: 300px;
+	padding-left: 50px;
+}
+
+#mapSearch {
+	height: 30px;
+}
+
+#mapSearch_btn {
+	height: 35px;
+}
+
+.img_mark {
+	text-align: left;
+	padding: 15px;
+	position: relative;
+	width: 290px;
+	height: 100px;
+	background: url(/images/bg_bloodcenter.jpg) repeat-x 0px 65px;
+}
+
+.sitename {
+	margin-top: 0px;
+	color: #cc0000;
+	font-weight: bold;
+	font-size: 1.0em;
+	line-height: 1.4em;
+	padding-left: 35px;
+	padding-bottom: 7px;
+	background: url(/images/bloodCenter.png) no-repeat 0px 3px;
+}
+
+.phone {
+	background: url(/images/tel.png) no-repeat 0px 3px;
+	padding-left: 15px;
+	margin-top: 5px;
+	font-size: 0.8em;
+}
+
+.address {
+	margin-top: 10px;
+	font-size: 0.8em;
+}
+</style>
+</head>
+<body>
+	<div id="wrapping1">
+		<div id="wrapping2">
+			<header id="headers"></header>
+			<br>
+			<nav id="navs"></nav>
+			<br>
+
+			<section>
+				<div id="section_left">
+					<div id="left_mainNav">
+						<h1 style="margin-left: 20px; position: absolute;">헌혈의 집</h1>
+					</div>
+					<div class="left_subNav">
+						<a href="/find/house" class="subA">헌혈의 집 찾기</a>
+					</div>
+				</div>
+				<div id="section_right">
+					<h2>헌혈의집 찾기</h2>
+					<h3>지역명으로 검색하기</h3>
+					2014년 1월 1일부터 공공기관에서 도로명 주소 사용을 의무화 하고 있습니다.<br> 도로명주소
+					안내시스템(http://www.juso.go.kr)을 통해 지번주소로 도로명주소 검색이 가능합니다.<br> <br>
+					<br>
+					<div id="search_section">
+						<input type="text" onclick="searchAddr()" id="mapSearch"
+							placeholder="주소를 검색해주세요" size="50" value=""> <input
+							type="submit" id="mapSearch_btn" value="이동">
+					</div>
+					<br> <br> <br> <br> <br> <br>
+					<div id="map" style="width: 1000px; height: 450px;"></div>
+				</div>
+
+			</section>
+			<br> <br>
+			<footer id="footers"></footer>
+		</div>
+	</div>
+
+	<script>
+		var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
+		mapOption = {
+			center : new kakao.maps.LatLng(37.5706202,126.9797766), // 지도의 중심좌표
+			level : 3
+		// 지도의 확대 레벨
+		};
+
+		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+		// 지도 타입 변경 컨트롤을 생성한다
+		var mapTypeControl = new kakao.maps.MapTypeControl();
+
+		// 지도의 상단 우측에 지도 타입 변경 컨트롤을 추가한다
+		map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+		// 지도에 확대 축소 컨트롤을 생성한다
+		var zoomControl = new kakao.maps.ZoomControl();
+
+		// 지도의 우측에 확대 축소 컨트롤을 추가한다
+		map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+		//마커 이미지주소,크기,옵션
+		var imageSrc = 'https://www.bloodinfo.net/images/donating_blood/bldhouse/icon_bloodcenter_color.png', imageSize = new kakao.maps.Size(
+				30, 30), imageOption = {
+			offset : new kakao.maps.Point(5, 5)
+		};
+		
+		var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+		
+		// 마커를 표시할 위치와 내용을 가지고 있는 객체 배열입니다 
+		var positions = [ {
+			content : '<div class="img_mark"><p class="sitename">헌혈의집 연신내센터</p><p class="address">[122-809] 서울 은평구 통일로 855-8 (갈현동) Y빌딩 4층, 연신내역 6번출구</p><p class="phone">02-353-7750</p></div>'
+			,
+			latlng : new kakao.maps.LatLng(37.6190585,126.8502474)
+		},{
+			content : '<div class="img_mark"><p class="sitename">헌혈의집 수유센터</p><p class="address">서울 강북구 도봉로 325 수성타워 (지하철4호선 수유역 5번 출구)</p><p class="phone">02-900-4772</p></div>',
+			latlng : new kakao.maps.LatLng(37.6372764,126.9542956)
+		},{
+			content : '<div class="img_mark"><p class="sitename">헌혈의집 외대앞센터</p><p class="address">서울특별시 동대문구 이문1동 휘경로 15</p><p class="phone">02-2272-1370</p></div>',
+			latlng : new kakao.maps.LatLng(37.5958379,126.9918466)
+		},{
+			content : '<div class="img_mark"><p class="sitename">헌혈의집 고려대앞센터</p><p class="address">서울특별시 성북구 안암동 인촌로24길 11</p><p class="phone">02-967-3852</p></div>',
+			latlng : new kakao.maps.LatLng(37.5856445,127.027303)
+		},{
+			content : '<div class="img_mark"><p class="sitename">헌혈의집 회기센터</p><p class="address">서울특별시 동대문구 휘경1동 회기로 188</p><p class="phone">02-969-6199</p></div>',
+			latlng : new kakao.maps.LatLng(37.5896491,126.9867611)
+		},{
+			content : '<div class="img_mark"><p class="sitename">헌혈의집 대학로센터</p><p class="address">서울특별시 종로구 명륜2가 대명길 26</p><p class="phone">02-743-1972</p></div>',
+			latlng : new kakao.maps.LatLng(37.5833783,126.9996926)
+		},{
+			content : '<div class="img_mark"><p class="sitename">헌혈의집 서울역센터</p><p class="address">서울특별시 중구 회현동 청파로 426</p><p class="phone">02-752-9020</p></div>',
+			latlng : new kakao.maps.LatLng(37.557343,126.9693683)
+		},{
+			content : '<div class="img_mark"><p class="sitename">헌혈의집 신촌센터</p><p class="address">서울특별시 서대문구 신촌동 신촌로 107</p><p class="phone">02-312-1247</p></div>',
+			latlng : new kakao.maps.LatLng(37.5555936,126.937746)
+		},{
+			content : '<div class="img_mark"><p class="sitename">헌혈의집 영등포센터</p><p class="address">서울특별시 영등포구 영등포동 영중로 3</p><p class="phone">02-2675-1361</p></div>',
+			latlng : new kakao.maps.LatLng(37.516719,126.9059706)
+		},{
+			content : '<div class="img_mark"><p class="sitename">헌혈의집 잠실역센터</p><p class="address">서울특별시 송파구 잠실6동 올림픽로 265</p><p class="phone">02-2202-7479</p></div>',
+			latlng : new kakao.maps.LatLng(37.5125158,127.100806)
+		},{
+			content : '<div class="img_mark"><p class="sitename">헌혈의집 천호센터</p><p class="address">서울특별시 강동구 천호동 천호대로 1033</p><p class="phone">02-485-3515</p></div>',
+			latlng : new kakao.maps.LatLng(37.5378712,127.1268203)
+		},{
+			content : '<div class="img_mark"><p class="sitename">헌혈의집 노원센터</p><p class="address">서울특별시 노원구 상계6.7동 상계로 70</p><p class="phone">02-934-5340</p></div>',
+			latlng : new kakao.maps.LatLng(37.6559662,127.0626811)
+		},{
+			content : '<div class="img_mark"><p class="sitename">헌혈의집 강남센터</p><p class="address">서울특별시 서초구 서초동 1305-3 7층</p><p class="phone">02-533-0770</p></div>',
+			latlng : new kakao.maps.LatLng(37.5116895,127.0577953)
+		},{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 신촌 연대앞센터</p><p class="address">서울특별시 서대문구 명물길 6 윤성빌딩 8층</p><p class="phone">02-392-6460</p></div>',
+	         latlng : new kakao.maps.LatLng(37.5572881,126.937334)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 홍대 센터</p><p class="address">서울특별시 마포구 양화로 152  대화빌딩 6층)</p><p class="phone">02-323-5420</p></div>',
+	         latlng : new kakao.maps.LatLng(37.5557779,126.9228701)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 목동 센터</p><p class="address">서울특별시 양천구 목동동로 293 현대41타워 지하1층</p><p class="phone">02-715-3105</p></div>',
+	         latlng : new kakao.maps.LatLng(37.516719,126.8757773)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 노량진역 센터</p><p class="address">서울특별시 동작구 노량진동 73-1</p><p class="phone">02-8252-916</p></div>',
+	         latlng : new kakao.maps.LatLng(37.5133343,126.9429606)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 신도림역1 센터</p><p class="address">서울특별시 구로구 신도림동 360</p><p class="phone"02-671-1802</p></div>',
+	         latlng : new kakao.maps.LatLng(37.509679,126.8905342)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 신도림테크노마트 센터</p><p class="address">서울특별시 구로구 구로동 새말로 97</p><p class="phone">02-861-0801</p></div>',
+	         latlng : new kakao.maps.LatLng(37.5070449,126.8902177)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 구로디지털단지역 센터</p><p class="address">서울특별시 구로구 구로동 도림천로 477</p><p class="phone">02-869-9415</p></div>',
+	         latlng : new kakao.maps.LatLng(37.485126,126.9015312)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 광명 센터</p><p class="address">경기도 광명시 광명동 광명로 906 현대아이타워 501호</p><p class="phone">02-2060-5473</p></div>',
+	         latlng : new kakao.maps.LatLng(37.4797368,126.8548501)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 돈암 센터</p><p class="address">서울특별시 성북구 동선동 동소문로20다길 17</p><p class="phone">02-925-3566</p></div>',
+	         latlng : new kakao.maps.LatLng(37.5919274,127.0177031)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 우장산역 센터</p><p class="address">서울특별시 강서구 화곡동 강서로45길 5</p><p class="phone">02-2603-5817</p></div>',
+	         latlng : new kakao.maps.LatLng(37.5478225,126.8358225)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 발산역 센터</p><p class="address">서울특별시 강서구 가양1동 강서로 385 우성에스비타워 5층 507호</p><p class="phone">02-777-1291</p></div>',
+	         latlng : new kakao.maps.LatLng(37.5597857,126.8384135)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 서울대역 센터</p><p class="address">서울특별시 관악구 낙성대동 1598-18</p><p class="phone">02-873-4364</p></div>',
+	         latlng : new kakao.maps.LatLng(37.4786593,126.9525782)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 이수 센터</p><p class="address">서울특별시 동작구 사당동 145-2</p><p class="phone">02-578-9811</p></div>',
+	         latlng : new kakao.maps.LatLng(37.4863103,126.9816705)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 서울남부(원내) 센터</p><p class="address">서울특별시 강남구 개포4동 개포로31길 48</p><p class="phone">02-570-0662</p></div>',
+	         latlng : new kakao.maps.LatLng(37.4821297,127.0487706)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 코엑스 센터</p><p class="address">서울특별시 강남구 삼성1동 봉은사로 524</p><p class="phone">02-551-0600</p></div>',
+	         latlng : new kakao.maps.LatLng(37.5111748,127.059909)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 강남 센터</p><p class="address">서울특별시 서초구 서초동 1305-3 7층</p><p class="phone">02-533-0770</p></div>',
+	         latlng : new kakao.maps.LatLng(37.5013247,127.0254986)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 강남2 센터</p><p class="address">서울특별시 강남구 역삼동 825-9</p><p class="phone">02-564-1525</p></div>',
+	         latlng : new kakao.maps.LatLng(37.496624,127.0286635)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 한양대역 센터</p><p class="address">서울특별시 성동구 사근동 왕십리로 206</p><p class="phone">02-2296-1076</p></div>',
+	         latlng : new kakao.maps.LatLng(37.5557992,127.0438395)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 건대역 센터</p><p class="address">서울특별시 광진구 화양동 동일로22길 115 하마빌딩 4층</p><p class="phone">02-498-4185</p></div>',
+	         latlng : new kakao.maps.LatLng(37.5407217,127.0704372)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 동서울2 센터</p><p class="address"> 서울특별시 강변역로 구의동 광진구50,114호 </p><p class="phone">02-446-3526</p></div>',
+	         latlng : new kakao.maps.LatLng(37.5343168,127.0943817)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 강동 센터</p><p class="address">서울특별시 강동구 명일동 고덕로 272</p><p class="phone">02-3427-5130</p></div>',
+	         latlng : new kakao.maps.LatLng(37.5549335,127.1556383)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 광화문 센터</p><p class="address">서울특별시 종로구 청진동 종로 33</p><p class="phone">02-732-1027</p></div>',
+	         latlng : new kakao.maps.LatLng(37.5706202,126.9797766)
+	      },{
+	         content : '<div class="img_mark"><p class="sitename">헌혈의집 노해로 센터</p><p class="address">서울특별시 노원구 상계6.7동 노해로 480</p><p class="phone">02-935-0322</p></div>',
+	         latlng : new kakao.maps.LatLng(37.6541572,127.0614199)
+	      }
+		];
+
+		for (var i = 0; i < positions.length; i++) {
+			// 마커를 생성합니다
+			var marker = new kakao.maps.Marker({
+				map : map, // 마커를 표시할 지도
+				position : positions[i].latlng,
+				image : markerImage,
+				clickable : true
+			// 마커의 위치
+			});
+
+			// 마커에 표시할 인포윈도우를 생성합니다 
+			var infowindow = new kakao.maps.InfoWindow({
+				content : positions[i].content,
+				removable : true
+				
+			// 인포윈도우에 표시할 내용
+			});
+			kakao.maps.event.addListener(marker, 'click', makeClickListener(map,marker,infowindow));
+		}
+			 
+		function makeClickListener(map,marker,infowindow){
+			return function(){
+				infowindow.open(map,marker);
+			};
+		}
+		
+		$("#mapSearch_btn").click(function(){
+			var geocoder = new kakao.maps.services.Geocoder();
+		       geocoder.addressSearch($("#mapSearch").val(), function(result, status) {
+
+		           // 정상적으로 검색이 완료됐으면 
+		            if (status === kakao.maps.services.Status.OK) {
+
+		               var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+		               // 지도의 중심을 결과값으로 받은 위치로 
+
+		               map.setCenter(coords);
+		           } 
+		       });
+		})
+		
+		
+	    function searchAddr() {
+	        new daum.Postcode({
+	            oncomplete: function(data) {
+		console.log(data);
+	                // 주소 정보를 해당 필드에 넣는다.
+	                document.getElementById("mapSearch").value = data.address;
+	            }
+	        }).open();
+	    }
+
+	</script>
+</body>
+</html>
